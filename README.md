@@ -69,3 +69,6 @@ CharMap=hd44780_default
 
 
 ```
+In action:
+
+https://www.youtube.com/watch?v=BneBLG7jdJY
