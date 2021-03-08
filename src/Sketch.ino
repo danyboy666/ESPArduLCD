@@ -18,8 +18,8 @@ const int LCDH = 2;
 #include <ESP8266WebServer.h>
 
 #ifndef STASSID
-#define STASSID "ac1350_2Ghz"
-#define STAPSK  "danyboy_666"
+#define STASSID "ssid"
+#define STAPSK  "pass"
 #endif
 
 const char* ssid     = STASSID;
