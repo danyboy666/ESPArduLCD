@@ -125,6 +125,7 @@ void loop() {
 
         // not really sure if this is needed
         switch (cmd) { // switch the incoming char
+/*
           case 0x00:
             while (1) {
               cmd = client.read();
@@ -134,7 +135,7 @@ void loop() {
             }
             lcd.write(cmd);
             break;
-
+*/
           case ETHLCD_SEND_INSTR: // intruction bit 0x01, send command to the LCD
 
             while (client.available() == 0) {
@@ -185,21 +186,29 @@ void loop() {
               break;
               
             case ETHLCD_GET_FIRMWARE_VERSION: // not sure if this is needed
-              cmd = client.read();
+//              cmd = client.read();
 //              Serial.println(String("case ETHLCD_GET_FIRMWARE_VERSION: ") + cmd);
               client.write(ETHLCD_GET_FIRMWARE_VERSION); // reply back to the driver
               break;
+
+            case ETHLCD_CLOSE_CONN: // not sure if this is needed
+              //cmd = client.read();
+//              Serial.println(String("case ETHLCD_GET_FIRMWARE_VERSION: ") + cmd);
+              client.write(ETHLCD_CLOSE_CONN); // reply back to the driver
+              break;
               
-            default: // 
-              // By default we write to the LCD; lcdproc never passes here
+            default: // Write back 
+              client.write(ETHLCD_UNRECOGNIZED_COMMAND); // lcdproc crash fix
 //              Serial.println(String("Default case: ") + cmd);
-              lcd.write(cmd);
-              cursor++;
+              //lcd.write(cmd);
+              //cursor++;
               break;
               } // end switch cmd
             } //end while client available
         } // end while client connected
-        // client.stop(); // not sure if needed or not
+        
+        client.write(ETHLCD_CLOSE_CONN); // lcdproc crash fix
+        client.stop(); // Don't leave the client connected for nothing, lcdproc crash fix
         Serial.println("Client disconnected");
       } // end if client
     }// end main loop
