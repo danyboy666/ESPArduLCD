@@ -3,16 +3,17 @@
 ESP8266 based interface for HD44780 LCD to lcdproc and equivalent.
 
 Based on http://manio.skyboo.net/ethlcd/ 
+and
 https://github.com/ZivaVatra/ArduLCD
-and 
+ 
 
 Credit goes to both of those devs. I ported what already existed for my purposes. 
 
-Main code is checking for 
+Main code is checking for :
 
-ETHLCD_SEND_INSTR	0x01
-ETHLCD_SEND_DATA	0x02
-ETHLCD_SET_BACKLIGHT	0x04
+- ETHLCD_SEND_INSTR	0x01
+- ETHLCD_SEND_DATA	0x02
+- ETHLCD_SET_BACKLIGHT	0x04
 
 I've added replys client.write(cmd) since the original code was handling the tcp layer this is the way I found to send tcp ack. Not sure if this proper or not but it works and I removed all other cases since i'm only handling the lcdproc requests; 
 
