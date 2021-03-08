@@ -122,11 +122,10 @@ void loop() {
 
         Serial.println(String("Incoming string: ") + cmd);
         client.flush();
-
-        // not really sure if this is needed
+        
         switch (cmd) { // switch the incoming char
 /*
-          case 0x00:
+          case 0x00: // not really sure if this is needed
             while (1) {
               cmd = client.read();
               if (cmd != -1) {
