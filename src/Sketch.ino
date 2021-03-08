@@ -1,9 +1,4 @@
-//#include <avr/io.h>
-//#include <util/delay.h>
 #include <Arduino.h>
-// vim: ts=4 ai
-// based on info got from here:
-// http://lcdproc.cvs.sourceforge.net/viewvc/lcdproc/lcdproc/server/drivers/hd44780-serial.h?content-type=text%2Fplain
 
 #define LED_PIN 15    // This is the pin the backlight is controlled by, it must be a PWM pin
 #define STARTUP_BRIGHTNESS 128  // What backlight brightness to start up with (50% by default).
@@ -23,8 +18,8 @@ const int LCDH = 2;
 #include <ESP8266WebServer.h>
 
 #ifndef STASSID
-#define STASSID "ssid"
-#define STAPSK  "pass"
+#define STASSID "ac1350_2Ghz"
+#define STAPSK  "danyboy_666"
 #endif
 
 const char* ssid     = STASSID;
@@ -59,15 +54,10 @@ WiFiServer server(LCD_PORT);
 
 #endif //ETHLCD_PROTO_H
 
-
-// And this is ths Hardware serial port (which is also bound to the UART->USB chip)
-//#include <HardwareSerial.cpp>
-
 // initialize the library with the numbers of the interface pins
 /*  Note, while all the ardu documentation and schematics show 4-bit operation.
   It seems the library actually supports both 8-bit and 4-bit mode. It attempts
   8-bit, then falls back to 4-bit */
-//LiquidCrystal lcd(12, 11, 2, 3, 4, 5, 6, 7, 8, 9);
 const int rs = 16, en = 5, d4 = 4, d5 = 13, d6 = 12, d7 = 14;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
@@ -132,44 +122,43 @@ void loop() {
 
         Serial.println(String("Incoming string: ") + cmd);
         client.flush();
-        
-        switch (cmd) { // switch it
+
+        // not really sure if this is needed
+        switch (cmd) { // switch the incoming char
           case 0x00:
             while (1) {
               cmd = client.read();
-              //client.write(0x0);
-              Serial.println(String("Case 0: ") + cmd);
               if (cmd != -1) {
                 break;
               }
             }
-            Serial.println(String("Case 0 data: ") + cmd);
-            //Serial.println(cmd);
             lcd.write(cmd);
             break;
 
-          case ETHLCD_SEND_INSTR:
+          case ETHLCD_SEND_INSTR: // intruction bit 0x01, send command to the LCD
 
             while (client.available() == 0) {
               delay(1);
             }
             cmd = client.read();
-            Serial.println(String("ETHLCD_SEND_INSTR: ") + cmd);
+//            Serial.println(String("ETHLCD_SEND_INSTR: ") + cmd);
             lcd.command(cmd);
-            client.write(ETHLCD_SEND_INSTR);
+            client.write(ETHLCD_SEND_INSTR); // reply back to the driver; this is needed, not sure why but it's related the the tcp stuff on server side.
             //cursor = cmd;
             break;
 
-          case ETHLCD_SEND_DATA:
+          case ETHLCD_SEND_DATA: // data bit 0x02, we send data to the LCD here
             cmd = client.read();
-            Serial.println(String("ETHLCD_SEND_DATA: ") + cmd);
+ //           Serial.println(String("ETHLCD_SEND_DATA: ") + cmd);
             lcd.write(cmd);
-            client.write(ETHLCD_SEND_DATA);
+            client.write(ETHLCD_SEND_DATA); // reply back to the driver
             cursor++;
             break;
 
-          case ETHLCD_SET_BACKLIGHT:
+          case ETHLCD_SET_BACKLIGHT: // backlight setup
             cmd = client.read();
+
+            // broken
             /*
             if (cmd == ETHLCD_BACKLIGHT_ON)
             {
@@ -190,28 +179,27 @@ void loop() {
 
                 */
 
-              set_backlight(255);
-              Serial.println(String("ETHLCD_SET_BACKLIGHT: ") + cmd);
-              client.write(ETHLCD_SET_BACKLIGHT);
+              set_backlight(255); // hard code the backlight for now
+//              Serial.println(String("ETHLCD_SET_BACKLIGHT: ") + cmd);
+              client.write(ETHLCD_SET_BACKLIGHT); // reply back to the driver
               break;
               
-            case 0x06:
+            case ETHLCD_GET_FIRMWARE_VERSION: // not sure if this is needed
               cmd = client.read();
-              Serial.println(String("case ETHLCD_GET_FIRMWARE_VERSION: ") + cmd);
-              client.write(0x06);
+//              Serial.println(String("case ETHLCD_GET_FIRMWARE_VERSION: ") + cmd);
+              client.write(ETHLCD_GET_FIRMWARE_VERSION); // reply back to the driver
               break;
               
             default: // 
-              // By default we write to the LCD
-              Serial.println(String("Default case: ") + cmd);
+              // By default we write to the LCD; lcdproc never passes here
+//              Serial.println(String("Default case: ") + cmd);
               lcd.write(cmd);
               cursor++;
               break;
               } // end switch cmd
             } //end while client available
-        } // end whie client connected
-        // client.stop();
+        } // end while client connected
+        // client.stop(); // not sure if needed or not
         Serial.println("Client disconnected");
       } // end if client
-
     }// end main loop
