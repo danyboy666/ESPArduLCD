@@ -106,6 +106,9 @@ tail -f /var/lib/kodi/.kodi/temp/kodi.log
 2021-03-11 08:28:41.394 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/userdata/LCD.xml
 
 ```
+```
+sudo systemctl daemon-reload
+```
 
 In action:
 
