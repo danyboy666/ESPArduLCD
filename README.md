@@ -94,13 +94,17 @@ WantedBy=multi-user.target
 ```
 
 ```
-[code]2021-03-11 08:28:38.824 T:281471654798512 WARNING: ### [XBMC LCDproc] - Reply to 'noop' was ''
+tail -f /var/lib/kodi/.kodi/temp/kodi.log
+```
+
+```
+2021-03-11 08:28:38.824 T:281471654798512 WARNING: ### [XBMC LCDproc] - Reply to 'noop' was ''
 2021-03-11 08:28:38.824 T:281471654798512   ERROR: ### [XBMC LCDproc] - noop failed in IsConnected(), aborting!
 2021-03-11 08:28:41.187 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Connected to LCDd at 0.0.0.0:13666, Protocol version 0.3 - Geometry 16x2 characters (80x16 pixels, 5x8 pixels per character)
 2021-03-11 08:28:41.218 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Empty driver information reply
 2021-03-11 08:28:41.387 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/addons/script.xbmc.lcdproc/resources/LCD.xml.defaults
 2021-03-11 08:28:41.394 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/userdata/LCD.xml
-[/code]
+
 ```
 
 In action:
