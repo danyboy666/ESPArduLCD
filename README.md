@@ -70,6 +70,31 @@ CharMap=hd44780_default
 
 
 ```
+You will need to edit your lcdproc service file; I,ve made some changes to the code so it doesn't keep the client connected for nothing but after another crash i've edited the service to restarted itself.
+
+/etc/systemd/system/multi-user.target.wants/lcdproc.service
+
+[Unit]
+Description=LCD display daemon
+Documentation=man:LCDd(8) http://www.lcdproc.org/
+
+[Service]
+Restart=always
+User=root
+ExecStart=/usr/sbin/LCDd -s 1 -f -c /etc/LCDd.conf
+
+[Install]
+WantedBy=multi-user.target
+
+[code]2021-03-11 08:28:38.824 T:281471654798512 WARNING: ### [XBMC LCDproc] - Reply to 'noop' was ''
+2021-03-11 08:28:38.824 T:281471654798512   ERROR: ### [XBMC LCDproc] - noop failed in IsConnected(), aborting!
+2021-03-11 08:28:41.187 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Connected to LCDd at 0.0.0.0:13666, Protocol version 0.3 - Geometry 16x2 characters (80x16 pixels, 5x8 pixels per character)
+2021-03-11 08:28:41.218 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Empty driver information reply
+2021-03-11 08:28:41.387 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/addons/script.xbmc.lcdproc/resources/LCD.xml.defaults
+2021-03-11 08:28:41.394 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/userdata/LCD.xml
+[/code]
+
+
 In action:
 
 https://www.youtube.com/watch?v=BneBLG7jdJY
