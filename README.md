@@ -76,7 +76,7 @@ CharMap=hd44780_default
 You will need to edit your lcdproc service file; I,ve made some changes to the code so it doesn't keep the client connected for nothing but after another crash i've edited the service to restarted itself.
 
 ```
-/etc/systemd/system/multi-user.target.wants/lcdproc.service
+lcdproc.service
 ```
 
 ```
@@ -85,12 +85,18 @@ Description=LCD display daemon
 Documentation=man:LCDd(8) http://www.lcdproc.org/
 
 [Service]
-Restart=always
-User=root
+Type=simple
 ExecStart=/usr/sbin/LCDd -s 1 -f -c /etc/LCDd.conf
+User=lcdproc
+TimeoutStopSec=1s
+Restart=on-failure
+RestartSec=5
+StartLimitInterval=30
+StartLimitBurst=5
 
 [Install]
 WantedBy=multi-user.target
+
 ```
 
 ```
@@ -98,12 +104,20 @@ tail -f /var/lib/kodi/.kodi/temp/kodi.log
 ```
 
 ```
-2021-03-11 08:28:38.824 T:281471654798512 WARNING: ### [XBMC LCDproc] - Reply to 'noop' was ''
-2021-03-11 08:28:38.824 T:281471654798512   ERROR: ### [XBMC LCDproc] - noop failed in IsConnected(), aborting!
-2021-03-11 08:28:41.187 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Connected to LCDd at 0.0.0.0:13666, Protocol version 0.3 - Geometry 16x2 characters (80x16 pixels, 5x8 pixels per character)
-2021-03-11 08:28:41.218 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Empty driver information reply
-2021-03-11 08:28:41.387 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/addons/script.xbmc.lcdproc/resources/LCD.xml.defaults
-2021-03-11 08:28:41.394 T:281471654798512  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/userdata/LCD.xml
+2021-03-28 15:05:44.790 T:281471839339696  NOTICE: ### [XBMC LCDproc] - Connected to LCDd at 0.0.0.0:13666, Protocol version 0.3 - Geometry 16x2 characters (80x16 pixels, 5x8 pixels per character)
+2021-03-28 15:06:19.083 T:281471839339696  NOTICE: ### [XBMC LCDproc] - Empty driver information reply
+2021-03-28 15:06:19.194 T:281471570904240  NOTICE: service.xbmc.tts: 1.0.8
+2021-03-28 15:06:19.195 T:281471570904240  NOTICE: service.xbmc.tts: Platform: linux2
+2021-03-28 15:06:19.882 T:281471570904240  NOTICE: service.xbmc.tts: playSFX() has useCached
+2021-03-28 15:06:22.069 T:281471839339696  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/addons/script.xbmc.lcdproc/resources/LCD.xml.defaults
+2021-03-28 15:06:22.101 T:281471839339696  NOTICE: ### [XBMC LCDproc] - Loading settings from /var/lib/kodi/.kodi/userdata/LCD.xml
+2021-03-28 15:06:23.149 T:281472275559600  NOTICE: service.xbmc.tts: Threaded TTS Started: Speech-Dispatcher
+2021-03-28 15:06:23.196 T:281471570904240  NOTICE: service.xbmc.tts: Backend: Speech-Dispatcher
+2021-03-28 15:06:23.196 T:281471570904240  NOTICE: service.xbmc.tts: SERVICE STARTED :: Interval: 100ms
+2021-03-28 15:06:23.669 T:281472258774192  NOTICE: service.xbmc.tts: Threaded TTS Started: Speech-Dispatcher
+2021-03-28 15:06:23.727 T:281471570904240  NOTICE: service.xbmc.tts: Backend: Speech-Dispatcher
+2021-03-28 15:06:24.154 T:281472275559600  NOTICE: service.xbmc.tts: Threaded TTS Finished: Speech-Dispatcher
+
 
 ```
 ```
