@@ -99,6 +99,12 @@ WantedBy=multi-user.target
 
 ```
 
+
+```
+sudo systemctl daemon-reload
+```
+
+
 ```
 tail -f /var/lib/kodi/.kodi/temp/kodi.log
 ```
@@ -120,9 +126,7 @@ tail -f /var/lib/kodi/.kodi/temp/kodi.log
 
 
 ```
-```
-sudo systemctl daemon-reload
-```
+
 
 In action:
 
