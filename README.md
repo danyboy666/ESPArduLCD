@@ -32,7 +32,7 @@ Driver=hd44780
 ConnectionType=ethlcd
 
 # Device of the serial, I2C, or SPI interface [default: /dev/lcd]
-Device=ip_of_you_esp
+Device=ip_of_your_esp
 
 # Bitrate of the serial port (0 for interface default)
 Speed=9600
@@ -73,7 +73,7 @@ CharMap=hd44780_default
 
 # lcdproc service
 
-You will need to edit your lcdproc service file; I,ve made some changes to the code so it doesn't keep the client connected for nothing but after another crash i've edited the service to restarted itself.
+You will need to edit your lcdproc service file; I've made some changes to the code so it doesn't keep the client connected for nothing but after another crash i've edited the service to restarted itself.
 
 ```
 lcdproc.service
