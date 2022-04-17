@@ -15,7 +15,7 @@ Main code is checking for :
 - ETHLCD_SEND_DATA	0x02
 - ETHLCD_SET_BACKLIGHT	0x04
 
-I've added replys client.write(cmd) since the original code was handling the tcp layer this is the way I found to send tcp ack. Not sure if this proper or not but it works and I removed all other cases since i'm only handling the lcdproc requests; 
+I've added replies client.write(cmd) since the original code was handling the tcp layer this is the way I found to send tcp ack. Not sure if this proper or not but it works and I removed all other cases since i'm only handling the lcdproc requests; 
 
 # lcdproc configuration
 
